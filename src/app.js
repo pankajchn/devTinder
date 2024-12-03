@@ -2,24 +2,18 @@ const express = require("express");
 
 const app = express();
 
-// app.use("/user", function (req, res) {
-//   res.send("Breaking bad!");
+// app.get(/.*fly$/, function (req, res) {
+//   res.send({ firstName: "Pankaj", lastName: "Chouhan" });
 // });
 
-app.get("/user", function (req, res) {
-  res.send({ firstName: "Pankaj", lastName: "Chouhan" });
-});
+// app.get("/user", function (req, res) {
+//   console.log(req.query);
+//   res.send({ fName: "Pankaj", lName: "Chouhan" });
+// });
 
-app.post("/user", function (req, res) {
-  res.send("Data successfully sent to the database");
-});
-
-app.delete("/user", function (req, res) {
-  res.send("Data successfully deleted from the database");
-});
-
-app.put("/user", (req, res) => {
-  res.send("Data successfully updated ");
+app.get("/user/:userId/:password/:city", function (req, res) {
+  console.log(req.params);
+  res.send({ fName: "Pankaj", lName: "Chouhan" });
 });
 
 app.listen(3000, function () {
