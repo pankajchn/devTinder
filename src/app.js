@@ -13,7 +13,7 @@ app.post("/signup", async function (req, res) {
     await user.save();
     res.send("User added successfully");
   } catch (error) {
-    res.status(400).send("Error saving the user : ", error.message);
+    res.status(400).send("Error in saving the user : " + error.message);
   }
 });
 
@@ -53,9 +53,11 @@ app.delete("/user", async function (req, res) {
 app.patch("/user", async function (req, res) {
   const userId = req.body.userId;
   const data = req.body;
-  console.log(data)
   try {
-    const user = await User.findByIdAndUpdate(userId, data);
+    const user = await User.findByIdAndUpdate(userId, data, {
+      runValidators: true,
+    });
+
     res.send("User updated successfully");
   } catch (error) {
     res.status(404).send("User can not be updated");
