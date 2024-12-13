@@ -1,16 +1,15 @@
 const mongoose = require("mongoose");
+const validator = require("validator");
 
 const userSchema = new mongoose.Schema(
   {
     firstName: {
       type: String,
       required: true,
-      minLength: 4,
       maxLength: 50,
     },
     lastName: {
       type: String,
-      minLength: 4,
       maxLength: 50,
     },
     emailId: {
@@ -19,25 +18,45 @@ const userSchema = new mongoose.Schema(
       unique: true,
       lowercase: true,
       trim: true,
+      validate(value) {
+        if (!validator.isEmail(value)) {
+          throw new Error("Invalid Email Address");
+        }
+      },
     },
     password: {
       type: String,
       required: true,
       minLength: 8,
       maxLength: 26,
+      validate(value) {
+        if (!validator.isStrongPassword(value)) {
+          throw new Error("Weak password");
+        }
+      },
     },
     age: {
       type: Number,
       min: 18,
     },
     skills: {
-      type: [String],
+      type: [String], //array of strings
     },
     gender: {
       type: String,
       validate(value) {
         if (!["Male", "Female", "Others"].includes(value)) {
           throw new Error("Gender data is not valid");
+        }
+      },
+    },
+    photoUrl: {
+      type: String,
+      default:
+        "https://thumbs.dreamstime.com/b/vector-illustration-avatar-dummy-logo-collection-image-icon-stock-isolated-object-set-symbol-web-137160339.jpg",
+      validate(value) {
+        if (!validator.isURL(value)) {
+          throw new Error("Invalid photo url");
         }
       },
     },

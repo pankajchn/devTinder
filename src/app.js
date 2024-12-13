@@ -50,17 +50,31 @@ app.delete("/user", async function (req, res) {
   }
 });
 
-app.patch("/user", async function (req, res) {
-  const userId = req.body.userId;
+app.patch("/user/:_id" , async function (req, res) {
+  const userId = req.params._id;
   const data = req.body;
-  try {
-    const user = await User.findByIdAndUpdate(userId, data, {
-      runValidators: true,
-    });
 
-    res.send("User updated successfully");
-  } catch (error) {
-    res.status(404).send("User can not be updated");
+  const allowedUpdates = ["password", "age", "skills", "gender", "about"];
+  const updateData = Object.keys(data).filter((ele) => ele !== "_id");
+  const isUpdateAllowed = updateData.every((element) =>
+    allowedUpdates.includes(element)
+  );
+
+  try {
+    if (!isUpdateAllowed) {
+      throw new Error("Can not update the user");
+    }
+
+    if(data?.skills.length > 10){
+      throw new Error("Skills don't have more than 10 skills")
+    }
+
+    const user = await User.findByIdAndUpdate(userId, data, {
+      returnDocument: "after",
+    });
+    res.send("User Updated Successfully");
+  } catch (err) {
+    res.status(400).send("Update Failed : " + err.message);
   }
 });
 
