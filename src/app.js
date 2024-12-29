@@ -2,9 +2,6 @@ const express = require("express");
 const { connectDB } = require("./config/database.js");
 const { User } = require("./models/user.js");
 const cookieParser = require("cookie-parser");
-
-
-
 const { authRouter } = require("./routes/authRouter.js");
 const { profileRouter } = require("./routes/profileRouter.js");
 const { requestRouter } = require("./routes/requestRouter.js");

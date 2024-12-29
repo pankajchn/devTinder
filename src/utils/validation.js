@@ -6,7 +6,7 @@ const validateSignup = (req) => {
   if (!firstName || !lastName) {
     throw new Error("Username is required");
   } else if (firstName.length > 50 || lastName.length > 50) {
-    throw new Error("Username can't have more than 50 characters");
+    throw new Error("Username shouldn't have more than 50 characters");
   } else if (!validator.isEmail(emailId)) {
     throw new Error("Please enter a valid email address");
   } else if (!validator.isStrongPassword(password)) {
@@ -14,6 +14,23 @@ const validateSignup = (req) => {
   }
 };
 
+const validateEditProfileData = (req) => {
+  const allowedEditFields = [
+    "firstName",
+    "lastName",
+    "age",
+    "skills",
+    "gender",
+    "photoUrl",
+    "about",
+  ];
+  const isEditAllowed = Object.keys(req.body).every((field) =>
+    allowedEditFields.includes(field)
+  );
+  return isEditAllowed;
+};
+
 module.exports = {
   validateSignup,
+  validateEditProfileData,
 };
