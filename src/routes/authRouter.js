@@ -43,7 +43,7 @@ authRouter.post("/login", async function (req, res) {
 
   try {
     const user = await User.findOne({ emailId: emailId });
-    // console.log(user)
+
     if (!user) {
       throw new Error("Invalid credentials");
     }
@@ -55,7 +55,7 @@ authRouter.post("/login", async function (req, res) {
     } else {
       const token = await user.getJWT();
       res.cookie("token", token, { expires: new Date(Date.now() + 900000) });
-      res.send("User login successfully");
+      res.send(user);
     }
   } catch (err) {
     res.status(400).send("Error : " + err.message);
