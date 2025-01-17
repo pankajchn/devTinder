@@ -6,13 +6,17 @@ const profileRouter = express.Router();
 
 profileRouter.get("/profile/view", userAuth, function (req, res) {
   try {
-    res.send(req.user);
+    const loggedInUser = req.user;
+    res.json({
+      message: "Profile details fetched successfully",
+      data: loggedInUser,
+    });
   } catch (err) {
-    res.status(400).send("Error : ", err.message);
+    res.status(400).json("Error : ", err.message);
   }
 });
 
-profileRouter.patch("/profile/edit", userAuth, async function (req, res) {
+profileRouter.post("/profile/edit", userAuth, async function (req, res) {
   try {
     if (!validateEditProfileData(req)) {
       throw new Error("Invalid Edit Request");
@@ -25,7 +29,7 @@ profileRouter.patch("/profile/edit", userAuth, async function (req, res) {
       data: loggedInUser,
     });
   } catch (error) {
-    res.status(400).send("Error : " + error.message);
+    res.status(400).json({ message: `ERROR: ${error.message}` });
   }
 });
 

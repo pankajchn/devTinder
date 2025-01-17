@@ -65,7 +65,7 @@ requestRouter.post(
         data,
       });
     } catch (error) {
-      res.status(400).send("Error : " + error.message);
+      res.status(400).json({message: `ERROR : ${error.message}`})
     }
   }
 );
@@ -108,7 +108,7 @@ requestRouter.post(
       const data = await connectionRequest.save();
       res.json({ message: `Connection Request ${status}`, data });
     } catch (err) {
-      res.status(400).send("Error : ", err.message);
+      res.status(400).json({message: `ERROR : ${err.message}`})
     }
   }
 );
