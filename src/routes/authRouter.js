@@ -29,21 +29,21 @@ authRouter.post("/signup", async function (req, res) {
 
     res.json({ message: "Signup successfully", data: user });
   } catch (error) {
-    res.status(400).json({ message: `Error ${error.message}` });
+    res.status(400).json({ message: `${error.message}` });
   }
 });
 
 authRouter.post("/login", async function (req, res) {
   const { emailId, password } = req.body;
 
-  if (!emailId || !password) {
-    throw new Error("Email and Password are required");
-  }
-  if (!validator.isEmail(emailId)) {
-    throw new Error("Invalid email address");
-  }
-
   try {
+    if (!emailId || !password) {
+      throw new Error("Email and password fields are required");
+    }
+    if (!validator.isEmail(emailId)) {
+      throw new Error("Invalid email address");
+    }
+
     const user = await User.findOne({ emailId: emailId });
 
     if (!user) {
@@ -56,11 +56,11 @@ authRouter.post("/login", async function (req, res) {
       throw new Error("Invalid credentials");
     } else {
       const token = await user.getJWT();
-      res.cookie("token", token, { expires: new Date(Date.now() + 900000) });
+      res.cookie("token", token, { expires: new Date(Date.now() + 7200000) });
       res.json({ message: `Login successfull`, data: user });
     }
   } catch (err) {
-    res.status(400).json({ message: `ERROR ${err.message}` });
+    res.status(400).json({ message: `${err.message}` });
   }
 });
 
