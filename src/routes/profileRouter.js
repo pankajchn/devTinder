@@ -11,8 +11,8 @@ profileRouter.get("/profile/view", userAuth, function (req, res) {
       message: "Profile details fetched successfully",
       data: loggedInUser,
     });
-  } catch (err) {
-    res.status(400).json("Error : ", err.message);
+  } catch (error) {
+    res.status(400).json({message: `ERROR: ${error.message}`})
   }
 });
 
