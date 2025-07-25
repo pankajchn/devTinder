@@ -11,7 +11,15 @@ require("dotenv").config();
 
 const app = express();
 
-app.use(cors({ origin: ["http://13.61.22.30:80/", "http://13.61.22.30:80"], credentials: true }));
+
+
+app.use(
+  cors({
+    methods: ["GET", "HEAD", "PUT", "PATCH", "POST", "DELETE"],
+    origin: ["http://13.61.22.30:80/", "http://13.61.22.30:80"],
+    credentials: true,
+  })
+);
 
 app.use(express.json());
 app.use(cookieParser());
