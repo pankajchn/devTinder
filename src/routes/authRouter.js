@@ -13,6 +13,7 @@ authRouter.post("/signup", async function (req, res) {
 
     // hashing the password
     const { firstName, lastName, emailId, password } = req.body;
+    console.log(req.body);
     const saltRounds = 10;
     const hashedPassword = await bcrypt.hash(password, saltRounds);
 
@@ -31,10 +32,10 @@ authRouter.post("/signup", async function (req, res) {
       sameSite: "Lax",
       secure: false,
     });
-
+    console.log(savedUser)
     res.json({ message: "Signup successfully", data: user });
   } catch (error) {
-    res.status(400).json({ message: `${error.message}` });
+    res.status(400).json({ message: `${error}` });
   }
 });
 

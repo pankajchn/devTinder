@@ -11,16 +11,13 @@ require("dotenv").config();
 
 const app = express();
 
+const corsOptions = {
+  origin: "http://localhost:5173",
+  credentials: true,
+};
 
-
-app.use(
-  cors({
-    methods: ["GET", "HEAD", "PUT", "PATCH", "POST", "DELETE"],
-    origin: ["http://13.61.22.30:80/", "http://13.61.22.30:80"],
-    credentials: true,
-  })
-);
-
+app.use(cors(corsOptions));
+app.options('*', cors(corsOptions));
 app.use(express.json());
 app.use(cookieParser());
 
