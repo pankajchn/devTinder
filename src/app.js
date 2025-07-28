@@ -1,13 +1,13 @@
 const express = require("express");
 const cors = require("cors");
 const { connectDB } = require("./config/database.js");
-const { User } = require("./models/user.js");
 const cookieParser = require("cookie-parser");
 const { authRouter } = require("./routes/authRouter.js");
 const { profileRouter } = require("./routes/profileRouter.js");
 const { requestRouter } = require("./routes/requestRouter.js");
 const { userRouter } = require("./routes/userRouter.js");
-require("dotenv").config();
+const dotenv = require("dotenv");
+dotenv.config();
 
 const app = express();
 
@@ -17,7 +17,7 @@ const corsOptions = {
 };
 
 app.use(cors(corsOptions));
-app.options('*', cors(corsOptions));
+app.options("*", cors(corsOptions));
 app.use(express.json());
 app.use(cookieParser());
 

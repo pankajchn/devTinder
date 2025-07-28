@@ -21,7 +21,7 @@ userRouter.get("/user/requests/received", userAuth, async function (req, res) {
       data: connectionRequest,
     });
   } catch (err) {
-    res.status(400).json({message: `ERROR : ${err.message}`})
+    res.status(400).json({message: `ERROR : ${err.message}` });
   }
 });
 
@@ -45,13 +45,13 @@ userRouter.get("/user/connections", userAuth, async function (req, res) {
       return row.fromUserId;
     });
 
-    res.json({message: "All connections retreived successfully", data})
+    res.json({ message: "All connections retreived successfully", data });
   } catch (err) {
     res.status(400).json({ message: err.message });
   }
 });
 
-userRouter.get("/user/feed", userAuth, async function (req, res) {
+userRouter.get("/user/feed", async function (req, res) {
   const loggedInUser = req.user;
   const page = parseInt(req.query.page) || 1;
   let limit = parseInt(req.query.limit) || 10;

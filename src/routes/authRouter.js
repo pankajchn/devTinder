@@ -13,7 +13,6 @@ authRouter.post("/signup", async function (req, res) {
 
     // hashing the password
     const { firstName, lastName, emailId, password } = req.body;
-    console.log(req.body);
     const saltRounds = 10;
     const hashedPassword = await bcrypt.hash(password, saltRounds);
 
@@ -26,13 +25,13 @@ authRouter.post("/signup", async function (req, res) {
 
     const savedUser = await user.save();
     const token = await savedUser.getJWT();
+    console.log("TOKEN___>", token);
     res.cookie("token", token, {
       maxAge: 24 * 60 * 60 * 1000,
       httpOnly: true,
       sameSite: "Lax",
       secure: false,
     });
-    console.log(savedUser)
     res.json({ message: "Signup successfully", data: user });
   } catch (error) {
     res.status(400).json({ message: `${error}` });
