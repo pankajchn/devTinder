@@ -21,7 +21,7 @@ userRouter.get("/user/requests/received", userAuth, async function (req, res) {
       data: connectionRequest,
     });
   } catch (err) {
-    res.status(400).json({message: `ERROR : ${err.message}` });
+    res.status(400).json({ message: `ERROR : ${err.message}` });
   }
 });
 
@@ -51,8 +51,7 @@ userRouter.get("/user/connections", userAuth, async function (req, res) {
   }
 });
 
-userRouter.get("/user/feed", async function (req, res) {
-  const loggedInUser = req.user;
+userRouter.get("/user/feed", userAuth, async function (req, res) {
   const page = parseInt(req.query.page) || 1;
   let limit = parseInt(req.query.limit) || 10;
   const skip = (page - 1) * limit;
@@ -60,7 +59,7 @@ userRouter.get("/user/feed", async function (req, res) {
 
   try {
     const connectionRequest = await ConnectionRequest.find({
-      $or: [{ fromUserId: loggedInUser._id }, { toUserId: loggedInUser._id }],
+      $or: [{ fromUserId: req.user?._id }, { toUserId: req.user?._id }],
     }).select("fromUserId toUserId");
 
     const hideUsersFromFeed = new Set();
@@ -72,7 +71,7 @@ userRouter.get("/user/feed", async function (req, res) {
 
     const showUsers = await User.find({
       $and: [
-        { _id: { $ne: loggedInUser._id } },
+        { _id: { $ne: req.user?._id } },
         { _id: { $nin: Array.from(hideUsersFromFeed) } },
       ],
     })
