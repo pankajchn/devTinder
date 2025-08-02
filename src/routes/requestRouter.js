@@ -3,6 +3,7 @@ const { userAuth } = require("../middlewares/auth.js");
 const { ConnectionRequest } = require("../models/connectionRequest.js");
 const { User } = require("../models/user.js");
 const mongoose = require("mongoose");
+const sendInterestEmail = require("../utils/sendEmail.js");
 
 const requestRouter = express.Router();
 
@@ -56,6 +57,16 @@ requestRouter.post(
       let dynamicMessage = "";
       if (status === "interested") {
         dynamicMessage = `You have shown interest in connecting with the ${toUser.firstName} ${toUser.lastName}.`;
+
+        try {
+          const fromUser = await User.findById(fromUserId);
+          await sendInterestEmail(
+            toUser.emailId,
+            `${fromUser.firstName} ${fromUser.lastName}`
+          );
+        } catch (error) {
+          console.error("Error sending interest email", error.message);
+        }
       } else if (status === "ignored") {
         dynamicMessage = `You have chosen to ignore the connection request.`;
       }
@@ -65,7 +76,7 @@ requestRouter.post(
         data,
       });
     } catch (error) {
-      res.status(400).json({message: `ERROR : ${error.message}`})
+      res.status(400).json({ message: `ERROR : ${error.message}` });
     }
   }
 );
@@ -108,7 +119,7 @@ requestRouter.post(
       const data = await connectionRequest.save();
       res.json({ message: `Connection Request ${status}`, data });
     } catch (err) {
-      res.status(400).json({message: `ERROR : ${err.message}`})
+      res.status(400).json({ message: `ERROR : ${err.message}` });
     }
   }
 );
