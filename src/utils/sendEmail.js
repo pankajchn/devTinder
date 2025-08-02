@@ -1,4 +1,4 @@
-const ses = require("./sesClient");
+const ses = require("./sesClient.js");
 
 const sendInterestEmail = async (recieverEmail, senderName) => {
   const params = {
