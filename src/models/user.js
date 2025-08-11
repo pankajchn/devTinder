@@ -67,6 +67,13 @@ const userSchema = new mongoose.Schema(
       type: String,
       default: "This is the default description of the user",
     },
+    isPremium: {
+      type: Boolean,
+      default: false,
+    },
+    membershipType: {
+      type: String
+    }
   },
   { timestamps: true }
 );
